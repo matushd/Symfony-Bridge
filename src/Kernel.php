@@ -39,9 +39,9 @@ abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
      *
      * @return ContainerInterface
      */
-    abstract protected function buildPHPDIContainer(\DI\ContainerBuilder $builder);
+    abstract protected function buildPHPDIContainer(\DI\ContainerBuilder $builder): ContainerInterface;
 
-    protected function getContainerBaseClass()
+    protected function getContainerBaseClass(): string
     {
         return SymfonyContainerBridge::class;
     }
