@@ -46,7 +46,7 @@ abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
         return SymfonyContainerBridge::class;
     }
 
-    protected function buildContainer()
+    protected function buildContainer(): ContainerBuilder
     {
         $containerBuilder = parent::buildContainer();
 
@@ -55,7 +55,7 @@ abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
         return $containerBuilder;
     }
 
-    protected function initializeContainer()
+    protected function initializeContainer(): void
     {
         parent::initializeContainer();
 
@@ -75,7 +75,7 @@ abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
      *
      * @param ContainerBuilder $container
      */
-    private function removeInvalidReferenceBehaviorPass(ContainerBuilder $container)
+    private function removeInvalidReferenceBehaviorPass(ContainerBuilder $container): void
     {
         $passConfig = $container->getCompilerPassConfig();
         $compilationPasses = $passConfig->getRemovingPasses();
@@ -90,7 +90,7 @@ abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
         $passConfig->setRemovingPasses($compilationPasses);
     }
 
-    private function disableDebugClassLoader()
+    private function disableDebugClassLoader(): void
     {
         if (!class_exists(DebugClassLoader::class)) {
             return;
@@ -102,7 +102,7 @@ abstract class Kernel extends \Symfony\Component\HttpKernel\Kernel
     /**
      * @return ContainerInterface
      */
-    protected function getPHPDIContainer()
+    protected function getPHPDIContainer(): ContainerInterface
     {
         if ($this->phpdiContainer === null) {
             $builder = new \DI\ContainerBuilder();

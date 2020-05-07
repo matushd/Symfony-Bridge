@@ -9,11 +9,10 @@
 
 namespace DI\Bridge\Symfony;
 
-use DI\NotFoundException;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
@@ -24,7 +23,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  *
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class SymfonyContainerBridge extends SymfonyContainer implements SymfonyContainerInterface, ContainerInterface
+class SymfonyContainerBridge extends SymfonyContainer
 {
     /**
      * @var ContainerInterface|null
@@ -34,7 +33,7 @@ class SymfonyContainerBridge extends SymfonyContainer implements SymfonyContaine
     /**
      * @param ContainerInterface $container
      */
-    public function setFallbackContainer(ContainerInterface $container)
+    public function setFallbackContainer(ContainerInterface $container): void
     {
         $this->fallbackContainer = $container;
     }
@@ -42,7 +41,7 @@ class SymfonyContainerBridge extends SymfonyContainer implements SymfonyContaine
     /**
      * @return ContainerInterface
      */
-    public function getFallbackContainer()
+    public function getFallbackContainer(): ContainerInterface
     {
         return $this->fallbackContainer;
     }
@@ -50,7 +49,7 @@ class SymfonyContainerBridge extends SymfonyContainer implements SymfonyContaine
     /**
      * {@inheritdoc}
      */
-    public function has($id)
+    public function has($id): bool
     {
         if (parent::has($id)) {
             return true;
@@ -85,7 +84,7 @@ class SymfonyContainerBridge extends SymfonyContainer implements SymfonyContaine
             }
 
             return $entry;
-        } catch (NotFoundException $e) {
+        } catch (NotFoundExceptionInterface $e) {
             if ($invalidBehavior === self::EXCEPTION_ON_INVALID_REFERENCE) {
                 throw new ServiceNotFoundException($id, null, $e);
             }

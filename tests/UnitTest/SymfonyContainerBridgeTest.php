@@ -11,10 +11,11 @@ namespace DI\Bridge\Symfony\Test\UnitTest;
 
 use DI\Bridge\Symfony\SymfonyContainerBridge;
 use DI\ContainerBuilder;
+use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as SfContainerInterface;
 
-class SymfonyContainerBridgeTest extends \PHPUnit_Framework_TestCase
+class SymfonyContainerBridgeTest extends TestCase
 {
     public function testHasFallback()
     {
@@ -55,11 +56,9 @@ class SymfonyContainerBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($wrapper->get('foo', SfContainerInterface::NULL_ON_INVALID_REFERENCE));
     }
 
-    /**
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
-     */
     public function testGetNotFoundException()
     {
+        $this->expectException(\Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException::class);
         $wrapper = new SymfonyContainerBridge();
 
         $wrapper->setFallbackContainer(ContainerBuilder::buildDevContainer());
